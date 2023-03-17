@@ -14,14 +14,18 @@ using namespace std;
 class checker {
 public:
     bool flag = true;
+    int sign (double a, double b){
+        if (a > b)
+            return -1;
+        return 1;
+    }
     vector <double> function_break(double a, double b, double eps, function <double(double)> func){
         vector <double> breakpoints;
         breakpoints.push_back(a);
         while (a < b){
             if (isnan(func(round(a / eps) * eps)) == true) {
-                cout << "epta" << endl;
                 if (is_removable(func, a - eps, a + eps, eps)){
-                    cout << "is " << endl;
+                    cout << "Есть устранимый разрыв 1 рода " << endl;
                     breakpoints.push_back(round(a / eps) * eps);
                 }
                 else {
@@ -34,12 +38,10 @@ public:
                 cout << "Разрыв 2 рода" << endl;
                 flag = false;
             }
-            //cout << a << " " << func(round(a / eps) * eps ) << endl;
-            //cout << a << " " << func(a ) << endl;
+
             a += eps;
         }
         breakpoints.push_back(b);
-        //cout << breakpoints[0] << " " << breakpoints.size() << endl;
 
         return breakpoints;
     }

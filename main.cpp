@@ -1,49 +1,52 @@
 #include "checker.h"
-#include "io.h"
 #include "functions.h"
+#include "io.h"
+#include "my_locale.h"
 #include "trapezoid_method.h"
+
+#include <ctime>
 #include <iostream>
 
 using namespace std;
 
 int main() {
+    locale out_comma (cout.getloc(), new my_locale);
+    cout.imbue(out_comma);
+    locale in_comma (cin.getloc(), new my_locale);
+    cin.imbue(in_comma);
+
     io io;
     functions f;
     checker check;
     trapezoid_method tr;
-    cout << "Выберите функцию для интегрирования от 1 до 6" << endl;
+    cout << "Выберите функцию для интегрирования от 1 до 7" << endl;
     int number = io.get_number();
-    /*if(1/tan(0) == INFINITY){
-        cout << "hoho" << endl;
-    }
-    cout << log(-1) << endl;*/
-//inf -inf nan
+    auto func = f.get_function(number);
+    io.print_function(number);
     cout << "Введите границы интегрирования" << endl;
     double a, b;
     cin >> a >> b;
-    auto ff = f.get_function(number);
+    int sign = check.sign(a, b);
+    if (sign == -1){
+        double tmp = a;
+        a = b;
+        b = tmp;
+    }
+
     cout << "Введите точность вычислений" << endl;
     double eps = io.get_accuracy();
-    //double br = check.function_break(a, b, eps, ff);
-    //cout << br;
-    vector<double> brs = check.function_break(a, b, eps, ff);
-    //cout << brs[0] << " " << brs[1] << " " << brs[2] << endl;
-    //function<double(double)> x = [](double x){return sin(x-1)/ (x-1);};
-    //cout << x(1) << endl;
-    /*double i = 0;
-    while (i < 2){
-        cout <<"hoho " << ff(i) <<"jops " << ff(i - 0) << " " << ff(i + 0) << endl;
-        double dr = ff(round(i / eps) * eps ) ;
-        cout<<"der "<< dr<<endl;
-        i += 0.1;
-    }*/
-    if (check.flag == true){
-        double r = tr.integrate(brs, eps, ff);
-        cout <<"res " <<  r << endl;
+
+    vector<double> brs = check.function_break(a, b, eps, func);
+
+    if (check.flag){
+        clock_t begin = clock();
+        double result = tr.integrate(brs, eps, func);
+        double time = (clock() - begin) / (double) CLOCKS_PER_SEC;
+        cout << "Результат вычисления интеграла: " << round(result / eps) * eps << endl;
+        double r = tr.get_R(a, b, eps, func);
+        cout << "Погрешность квадратурной формулы на [" << a << ", " << b << "]: R = " << r << endl;
+        cout << "Время выполнения метода: " << time << endl;
     }
-    //cout<<ff(2)<<endl;
-    //cout << sin(0)/0 << endl;
-    //auto x = [](double x){return 1/(x*x*x + 1);};
-    //cout << x(-1) << endl;
+
     return 0;
 }

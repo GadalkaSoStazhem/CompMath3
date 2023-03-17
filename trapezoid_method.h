@@ -12,27 +12,38 @@ class trapezoid_method {
 public:
     double integrate(vector<double> breakpoints, double eps, function<double(double)> func){
         double res = 0;
-        for (int i = 0; i < breakpoints.size() - 1; i++){
-            double part_res = 0;
-            double maximum = max_der(breakpoints[i], breakpoints[i + 1], eps, func);
-            //cout << "max " << maximum << endl;
-            int n = count_n(maximum, breakpoints[i], breakpoints[i + 1], eps);
-            //cout << "n " << n << endl;
-            double h = (breakpoints[i + 1] - breakpoints[i]) / n;
-            //cout << "h " << h << endl;
-            double a = breakpoints[i];
-            double b = breakpoints[i + 1];
 
-            //int nn = find_n(eps, a, b);
-            //cout <<"n " << nn << endl;
-            //double hh = (b - a) / nn;
-            //cout << "h " << hh << endl;
-            part_res += func(a);
-            part_res += func(b);
+        for (int i = 0; i < breakpoints.size() - 1; i++){
+            if (breakpoints.size() == 2) {
+                a = breakpoints[i];
+                b = breakpoints[i + 1];
+            }
+            else {
+                if (i == 0){
+                    a = breakpoints[i];
+                    b = breakpoints[i + 1] - eps / 2;
+                }
+                else{
+                    if (i + 1 == breakpoints.size() - 1){
+                        a = breakpoints[i] + eps / 2;
+                        b = breakpoints[i + 1];
+                    }
+                    else{
+                        a = breakpoints[i] + eps / 2;
+                        b = breakpoints[i + 1] - eps / 2;
+                    }
+                }
+            }
+
+            double part_res = 0;
+            double maximum = max_der(a, b, eps, func);
+            int n = count_n(maximum, a, b, eps);
+
+            double h = (b - a) / n;
+            part_res += (func(a) + func(b));
             double to_mul = 0;
             for (int j = 1; j < n; j++){
                 double x = a + j * h;
-                //cout << j<<" "<<x<< " f(x) " << func(x) <<endl;
                 to_mul += func(x);
             }
             to_mul *= 2;
@@ -42,23 +53,20 @@ public:
         }
         return res;
     }
+    double get_R (double a, double b, double eps, function<double(double)> func){
+        double maximum = max_der(a, b, eps, func);
+        int n = count_n(maximum, a, b, eps);
+        return maximum * pow((b - a), 3) / (12 * pow(n, 2));
+    }
 private:
-    double count_h (double a, double b, double eps, function<double(double)> func){
-        double h = eps / (func(b) - func(a));
-        return h;
-    }
-    int find_n(double eps, double a, double b){
-        return ceil((b - a) / eps);
-    }
+    double a;
+    double b;
     double max_der(double a, double b, double eps, function<double(double)> func){
-        double maximum = (func(a + eps) - 2 * func(a) + func(a - eps)) / (eps * eps);
+        double maximum = abs((func(a + eps) - 2 * func(a) + func(a - eps)) / pow(eps, 2));
         a += eps;
-        //cout << "tmp " << maximum << endl;
-        //cout << "part " << func(a + eps) << " part " << 2 * func(a) << " part "<<func(a - eps)<<endl;
+
         while (a < b){
-            double tmp = (func(a + eps) - 2 * func(a) + func(a - eps)) / pow(eps, 2);
-            //cout << "tmp " << tmp << endl;
-            //cout << "part " << func(a + eps) << " part " << 2 * func(a) << " part "<<func(a - eps)<<endl;
+            double tmp = abs((func(a + eps) - 2 * func(a) + func(a - eps)) / pow(eps, 2));
             maximum = max(maximum, tmp);
             a += eps;
         }
@@ -66,7 +74,6 @@ private:
     }
     int count_n(double maximum, double a, double b, double eps){
         int n = 1;
-        //cout << "smth " << maximum * pow(b - a, 3) / (12 * pow(n, 2)) << endl;
         while (maximum * pow(b - a, 3) / (12 * pow(n, 2)) > eps){
             n += 1;
         }

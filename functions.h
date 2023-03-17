@@ -4,8 +4,10 @@
 
 #ifndef COMPMATH3_FUNCTIONS_H
 #define COMPMATH3_FUNCTIONS_H
-#include <functional>
+
 #include <cmath>
+#include <functional>
+
 using namespace std;
 class functions {
 public:
@@ -24,8 +26,6 @@ public:
             case 6:
                 return [](double x){return 2 * (abs(x + 3) / (x + 3)) * x + 6;};
             case 7:
-                return [](double x){return sin(x - 1) / (x - 1);};
-            case 8:
                 return [](double x){return 0.08 * pow(x,4) + 0.33 * x - 0.02;};
         }
     }
