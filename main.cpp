@@ -42,9 +42,9 @@ int main() {
         clock_t begin = clock();
         double result = tr.integrate(brs, eps, func);
         double time = (clock() - begin) / (double) CLOCKS_PER_SEC;
-        cout << "Результат вычисления интеграла: " << round(result / eps) * eps << endl;
-        double r = tr.get_R(a, b, eps, func);
-        cout << "Погрешность квадратурной формулы на [" << a << ", " << b << "]: R = " << r << endl;
+        cout << "Результат вычисления интеграла: " << sign * round(result / eps) * eps << endl;
+        double r = tr.get_R(brs[0], brs[brs.size() - 1], eps, func);
+        cout << "Погрешность квадратурной формулы на [" << brs[0] << ", " << brs[brs.size() - 1] << "]: R = " << r << endl;
         cout << "Время выполнения метода: " << time << endl;
     }
 

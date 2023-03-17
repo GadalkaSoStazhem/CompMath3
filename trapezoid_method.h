@@ -64,7 +64,6 @@ private:
     double max_der(double a, double b, double eps, function<double(double)> func){
         double maximum = abs((func(a + eps) - 2 * func(a) + func(a - eps)) / pow(eps, 2));
         a += eps;
-
         while (a < b){
             double tmp = abs((func(a + eps) - 2 * func(a) + func(a - eps)) / pow(eps, 2));
             maximum = max(maximum, tmp);
