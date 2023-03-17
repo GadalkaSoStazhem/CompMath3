@@ -25,17 +25,17 @@ public:
         while (a < b){
             if (isnan(func(round(a / eps) * eps)) == true) {
                 if (is_removable(func, a - eps, a + eps, eps)){
-                    cout << "Есть устранимый разрыв 1 рода " << endl;
+                    cout << "Есть устранимый разрыв 1 рода в точке x = " << round(a / eps) * eps << endl;
                     breakpoints.push_back(round(a / eps) * eps);
                 }
                 else {
-                    cout << "На интервале интегрирования есть неустранимый разрыв 1 рода " << endl;
+                    cout << "Есть неустранимый разрыв 1 рода в точке x = " << round(a / eps) * eps << endl;
                     flag = false;
                 }
 
             }
             if (isinf((func(round(a / eps) * eps)))) {
-                cout << "Разрыв 2 рода" << endl;
+                cout << "Есть разрыв 2 рода в точке x = " << round(a / eps) * eps << endl;
                 flag = false;
             }
 
