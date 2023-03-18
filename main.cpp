@@ -39,12 +39,19 @@ int main() {
     vector<double> brs = check.function_break(a, b, eps, func);
 
     if (check.flag){
+        cout << "Введите количество точек разбиения (или -1 для автоматического расчета)" << endl;
+        int n;
+        cin >> n;
+        if (n == -1){
+            n = tr.get_n(a, b, eps, func);
+        }
         clock_t begin = clock();
-        double result = tr.integrate(brs, eps, func);
+        double result = tr.integrate(brs, eps, func, n);
         double time = (clock() - begin) / (double) CLOCKS_PER_SEC;
+        cout << "Количество точек разбиения интервала: n = " << n << endl;
         cout << "Результат вычисления интеграла: " << sign * round(result / eps) * eps << endl;
         double r = tr.get_R(brs[0], brs[brs.size() - 1], eps, func);
-        cout << "Погрешность квадратурной формулы на [" << brs[0] << ", " << brs[brs.size() - 1] << "]: R = " << r << endl;
+        cout << "Погрешность квадратурной формулы на [" << brs[0] << ", " << brs[brs.size() - 1] << "]: R <= " << r << endl;
         cout << "Время выполнения метода: " << time << endl;
     }
 

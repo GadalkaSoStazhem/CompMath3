@@ -10,7 +10,7 @@
 
 class trapezoid_method {
 public:
-    double integrate(vector<double> breakpoints, double eps, function<double(double)> func){
+    double integrate(vector<double> breakpoints, double eps, function<double(double)> func, int n){
         double res = 0;
 
         for (int i = 0; i < breakpoints.size() - 1; i++){
@@ -36,8 +36,7 @@ public:
             }
 
             double part_res = 0;
-            double maximum = max_der(a, b, eps, func);
-            int n = count_n(maximum, a, b, eps);
+
 
             double h = (b - a) / n;
             part_res += (func(a) + func(b));
@@ -49,6 +48,11 @@ public:
             res += part_res;
         }
         return res;
+    }
+    int get_n (double a, double b, double eps, function<double(double)> func){
+        double maximum = max_der(a, b, eps, func);
+        int n = count_n(maximum, a, b, eps);
+        return n;
     }
     double get_R (double a, double b, double eps, function<double(double)> func){
         double maximum = max_der(a, b, eps, func);
