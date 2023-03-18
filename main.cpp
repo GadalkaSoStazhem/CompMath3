@@ -52,6 +52,12 @@ int main() {
         cout << "Результат вычисления интеграла: " << sign * round(result / eps) * eps << endl;
         double r = tr.get_R(brs[0], brs[brs.size() - 1], eps, func);
         cout << "Погрешность квадратурной формулы на [" << brs[0] << ", " << brs[brs.size() - 1] << "]: R <= " << r << endl;
+        auto antiderivative = f.get_antiderivative(number);
+        if (antiderivative != NULL){
+            cout << "Значение по формуле Ньютона-Лейбница: " << check.newton_leibniz(brs, antiderivative) << endl;
+        }
+        else
+            cout << "Нельзя получить первообразную" << endl;
         cout << "Время выполнения метода: " << time << endl;
     }
 

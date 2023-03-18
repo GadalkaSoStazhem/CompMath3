@@ -44,7 +44,7 @@ public:
                 break;
             }
             case 4: {
-                cout << "1 / (x^3 + 1)" << endl;
+                cout << "1 / (x^2 + x)" << endl;
                 break;
             }
             case 5: {

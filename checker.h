@@ -53,6 +53,9 @@ public:
 
         return breakpoints;
     }
+    double newton_leibniz(vector <double> breakpoints, function<double(double)> func){
+        return func(breakpoints[breakpoints.size() - 1]) - func(breakpoints[0]);
+    }
 private:
     bool rem = true;
     bool is_removable(function <double(double)> f, double left, double right, double eps){
