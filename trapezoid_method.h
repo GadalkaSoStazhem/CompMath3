@@ -37,7 +37,6 @@ public:
 
             double part_res = 0;
 
-
             double h = (b - a) / n;
             part_res += (func(a) + func(b));
             for (int j = 1; j < n; j++){
