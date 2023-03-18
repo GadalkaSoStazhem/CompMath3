@@ -41,13 +41,10 @@ public:
 
             double h = (b - a) / n;
             part_res += (func(a) + func(b));
-            double to_mul = 0;
             for (int j = 1; j < n; j++){
                 double x = a + j * h;
-                to_mul += func(x);
+                part_res += (2 * func(x));
             }
-            to_mul *= 2;
-            part_res += to_mul;
             part_res *= (h / 2);
             res += part_res;
         }
