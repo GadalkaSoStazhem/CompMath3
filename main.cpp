@@ -46,7 +46,7 @@ int main() {
             n = tr.get_n(a, b, eps, func);
         }
         clock_t begin = clock();
-        double result = tr.integrate(brs, eps, func, n);
+        double result = tr.integrate(brs, eps, func, n) * sign;
         double time = (clock() - begin) / (double) CLOCKS_PER_SEC;
         cout << "Количество точек разбиения интервала: n = " << n << endl;
         cout << "Результат вычисления интеграла: " << sign * round(result / eps) * eps << endl;
